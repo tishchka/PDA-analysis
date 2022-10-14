@@ -5,13 +5,16 @@ from pda_constructor import *
 automata = pda()
 automata.add_state(state('q', first=True, final=True))
 automata.add_rule('q', 'q', '(', '(')
-automata.add_rule('q', 'q', ')', ')')
+automata.add_rule('q', 'q', ')', ')', 'NULL', "That's the comment")
 automata.add_rule('q', 'q', stack_taken='S', stack_placed='(S)S')
 automata.add_rule('q', 'q', stack_taken='S')
 automata.print_grammar()
 automata.print_grammar("ex1")
 
 # other features demonstration
+
+# automata.leave_comment("Another very important comment.", 'q', 'q', stack_taken='S')
+# automata.print_grammar()
 
 # automata.add_state(state('r'))
 # automata.add_rule('q', 'r', '(', ')')

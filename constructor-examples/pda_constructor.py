@@ -16,10 +16,11 @@ class pda:
     def add_state(self, state_: state):
         self.states.append(state_)
 
-    def add_rule(self, from_state_name, to_state_name, alpha_taken="EPS", stack_taken="NULL", stack_placed="NULL"):
+    def add_rule(self, from_state_name, to_state_name, alpha_taken="EPS",
+                 stack_taken="NULL", stack_placed="NULL", comment=""):
         for state_ in self.states:
             if state_.name == from_state_name:
-                state_.rules.append((to_state_name, alpha_taken, stack_taken, stack_placed))
+                state_.rules.append((to_state_name, alpha_taken, stack_taken, stack_placed, comment))
                 self.input_alphabet = list(set(self.input_alphabet + [alpha_taken]))
                 self.stack_alphabet = list(set(self.stack_alphabet + [stack_taken] + [stack_placed]))
                 for state__ in self.states:
@@ -32,11 +33,22 @@ class pda:
         for state__ in self.states:
             state__.rules = [rule for rule in state__.rules if rule[0] != state_.name]
 
-    def delete_rule(self, from_state_name, to_state_name, alpha_taken="EPS", stack_taken="NULL", stack_placed="NULL"):
+    def delete_rule(self, from_state_name, to_state_name, alpha_taken="EPS",
+                    stack_taken="NULL", stack_placed="NULL"):
         for state_ in self.states:
             if state_.name == from_state_name:
                 state_.rules = [rule for rule in state_.rules if
-                                rule != (to_state_name, alpha_taken, stack_taken, stack_placed)]
+                                rule[0:4] != (to_state_name, alpha_taken, stack_taken, stack_placed)]
+
+    def leave_comment(self, comment, from_state_name, to_state_name, alpha_taken="EPS",
+                      stack_taken="NULL", stack_placed="NULL"):
+        for state_ in self.states:
+            if state_.name == from_state_name:
+                for i in range(len(state_.rules)):
+                    if state_.rules[i][0] == to_state_name and state_.rules[i][1] == alpha_taken and \
+                       state_.rules[i][2] == stack_taken and state_.rules[i][3] == stack_placed:
+                        state_.rules[i] = (to_state_name, alpha_taken, stack_taken, stack_placed, comment)
+                        break
 
     def print_grammar(self, filename=None):
         if filename is not None:
@@ -104,5 +116,8 @@ class pda:
                     print("EMPTY", end=' ', file=outfile)
                 else:
                     print("`" + str(rule[3]) + "`", end=' ', file=outfile)
+
+                if rule[4] != '':
+                    print("<" + str(rule[4]) + ">", end=' ', file=outfile)
 
         print('\n', file=outfile)

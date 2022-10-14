@@ -2,10 +2,10 @@
 "q" ,
 "q" ,
 "q" ,
-'(' ')' ,
-`S` `(` `)` ,
+')' '(' ,
+`(` `)` `S` ,
 "q" '(' `(` ~ "q" NULL ,
-"q" ')' `)` ~ "q" NULL ,
+"q" ')' `)` ~ "q" NULL <That's the comment> ,
 "q" EPS `S` ~ "q" `(S)S` ,
 "q" EPS `S` ~ "q" NULL 
 

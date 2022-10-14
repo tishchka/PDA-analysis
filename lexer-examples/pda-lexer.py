@@ -10,7 +10,8 @@ tokens = [
     'ENDL',
     'NULL',
     'EMPTY',
-    'EPS'
+    'EPS',
+    'COMMENT'
 ]
 
 t_BIND = r'~'
@@ -25,7 +26,8 @@ t_ignore = " \t\r\f"
 
 def drop_commas_and_backslash(s):
     return s.replace("\\" + '"', '"').replace("\\" + "'", "'") \
-            .replace("\\" + '`', '`').replace("\\" + "\\", "\\")
+            .replace("\\" + '`', '`').replace("\\" + '<', '<') \
+            .replace("\\" + '>', '>').replace("\\" + "\\", "\\")
 
 
 def t_INPUT_ALPHABET(t):
@@ -42,6 +44,12 @@ def t_STACK_ALPHABET(t):
 
 def t_AUTOMATA_STATE(t):
     r'\".+?(?<!(?<!\\)\\)\"'
+    t.value = drop_commas_and_backslash(t.value[1:-1])
+    return t
+
+
+def t_COMMENT(t):
+    r'\<.+?(?<!(?<!\\)\\)\>'
     t.value = drop_commas_and_backslash(t.value[1:-1])
     return t
 
