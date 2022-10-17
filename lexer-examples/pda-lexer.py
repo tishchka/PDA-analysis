@@ -30,6 +30,23 @@ def drop_commas_and_backslash(s):
             .replace("\\" + '>', '>').replace("\\" + "\\", "\\")
 
 
+def for_comments(s):
+    s = s.replace("\n", " ")
+    result = s.replace("<", "").replace(">", "")
+    helper = []
+    i = 0
+    while i < len(s):
+        if s[i] == '<':
+            helper.append(('<', i))
+        if s[i] == '>':
+            result += "|" + s[helper[len(helper)-1][1]+1:i].replace("<", "").replace(">", "")
+            helper = helper[:-1]
+        i += 1
+    if len(helper) > 0:
+        result += "|" + s[helper[len(helper)-1][1]:i].replace("<", "").replace(">", "")
+    return result
+
+
 def t_INPUT_ALPHABET(t):
     r'\'.+?(?<!\\)\''
     t.value = drop_commas_and_backslash(t.value[1:-1])
@@ -49,8 +66,8 @@ def t_AUTOMATA_STATE(t):
 
 
 def t_COMMENT(t):
-    r'\<.+?(?<!(?<!\\)\\)\>'
-    t.value = drop_commas_and_backslash(t.value[1:-1])
+    r'\<.*\> | \<.*(\n.*)+\>'
+    t.value = for_comments(t.value[1:-1])
     return t
 
 

@@ -1,0 +1,15 @@
+"q" ,
+"q" ,
+"q" ,
+"q" ,
+'(' ')' <brackets are  beautiful>,
+`)` `S` `(` ,
+"q" '(' `(` ~
+              "q" NULL ,
+"q" ')' `)` ~ "q" NULL ,
+<I love this rule above.
+<It's my favourite!<More comments>>
+<Yet another one>
+>
+"q" EPS `S` ~ "q" `(S)S` ,
+"q" EPS `S` ~ "q" NULL
